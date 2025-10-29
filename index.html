@@ -1,9 +1,9 @@
-<!doctype html>UI
+<!DOCTYPE html>
 <html lang="id">
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, minimum-scale=0.5, maximum-scale=3.0" />
-<title>Server Panel — Simulasi Desktop</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<title>Server Panel — 16:9 Landscape</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
@@ -16,88 +16,90 @@
   }
   html,body{
     margin:0;
-    background:linear-gradient(#f7f7f7,#efefef);
+    background:linear-gradient(#f8f8f8,#efefef);
     font-family:"Poppins",system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;
     -webkit-font-smoothing:antialiased;
     overflow:auto;
   }
-  .stage {
-    width:1400px;
-    min-height:100vh;
+
+  .stage{
+    aspect-ratio:16/9;
+    max-width:1280px;
+    width:100%;
+    height:auto;
+    margin:auto;
     display:grid;
     grid-template-columns:35% 65%;
-    margin:auto;
     background:var(--panel-bg);
     border:1px solid var(--panel-border);
-    box-shadow:0 8px 30px rgba(0,0,0,0.05);
+    box-shadow:0 8px 30px rgba(0,0,0,0.06);
   }
-  .left {
-    padding:28px 24px;
+
+  .left{
+    padding:20px;
     border-right:1px solid var(--panel-border);
-    box-sizing:border-box;
     display:flex;
     flex-direction:column;
-    gap:14px;
+    gap:10px;
+    box-sizing:border-box;
   }
-  .left .title {
-    font-weight:700;
-    color:var(--black);
-    font-size:14px;
-  }
-  .access-box {
+  .title{font-weight:700;color:var(--black);font-size:14px;}
+  .access-box{
     border:1px solid var(--panel-border);
     border-radius:6px;
     padding:12px;
     background:#fff;
     font-size:13px;
-    font-family: "Courier New", monospace;
-    line-height:1.4;
-    color:#111;
+    line-height:1.35;
+    color:#222;
     overflow:auto;
-    height:calc(100vh - 100px);
+    flex:1;
     white-space:pre-wrap;
   }
-  .right {
-    padding:18px 20px;
+
+  .right{
+    padding:16px;
     display:flex;
     flex-direction:column;
     gap:12px;
+    box-sizing:border-box;
+    background:#fff;
   }
+
   .header-row{
     display:flex;
     align-items:center;
     justify-content:space-between;
   }
-  .server-title{
-    font-weight:800;
-    font-size:20px;
-  }
+  .server-title{font-weight:800;font-size:20px;}
   .accent{color:var(--accent-red);}
   .providers{
     display:grid;
-    grid-template-columns:repeat(2,1fr);
-    gap:8px;
-    width:420px;
+    grid-template-columns:repeat(4,1fr);
+    gap:6px;
   }
   .provider-btn{
-    background:linear-gradient(#fbfbfb,#fff);
+    background:#fff;
     border:1px solid #d4d4d4;
     border-radius:6px;
-    padding:10px;
+    padding:8px;
     font-weight:700;
     text-align:center;
     cursor:pointer;
+    font-size:13px;
   }
   .provider-btn.active{
-    background:linear-gradient(#fff7f6,#fff);
+    background:#fff7f7;
     border-color:rgba(176,77,77,0.3);
   }
+
   .center-split{
     display:grid;
     grid-template-columns:1fr 420px;
-    gap:14px;
+    gap:12px;
     align-items:start;
   }
+
   .sliders-panel{
     border:1px solid #e7e7e7;
     border-radius:6px;
@@ -105,51 +107,37 @@
     background:linear-gradient(#fff,#fafafa);
   }
   .label{font-weight:700;color:#666;font-size:13px;margin-bottom:8px;}
-  .slider-row{display:flex;align-items:center;gap:12px;margin:10px 0;}
+  .slider-row{display:flex;align-items:center;gap:10px;margin:10px 0;}
   .slider-row .text{width:170px;font-weight:700;color:#666;font-size:13px;}
   input[type="range"]{
-    -webkit-appearance:none;
-    appearance:none;
     flex:1;
     height:6px;
     background:#e6e6e6;
     border-radius:6px;
+    appearance:none;
     outline:none;
   }
   input[type="range"]::-webkit-slider-thumb{
-    -webkit-appearance:none;
-    width:16px;
-    height:16px;
-    border-radius:50%;
-    background:#222;
-    cursor:pointer;
+    width:16px;height:16px;border-radius:50%;background:#222;cursor:pointer;
   }
   .percent{width:48px;text-align:right;font-weight:800;font-size:13px;}
-  .wso-box{margin-top:10px;border-top:1px solid #eee;padding-top:12px;display:flex;flex-direction:column;gap:8px;}
+
   .right-col{display:flex;flex-direction:column;gap:12px;}
   .card{border:1px solid #e6e6e6;border-radius:6px;padding:12px;background:#fff;}
+
   .deposit-row{display:flex;align-items:center;gap:8px;}
   .deposit-input{flex:1;padding:8px;border:1px solid #ddd;border-radius:6px;font-weight:700;}
   .nominal-box{width:120px;text-align:center;border:1px solid #ddd;padding:8px;border-radius:6px;font-weight:800;}
+
   .jackpot-inputs{display:flex;gap:8px;margin-top:8px;}
   .jackpot-inputs input{flex:1;padding:8px;border:1px solid #ddd;border-radius:6px;text-align:right;font-weight:700;}
   .jackpot-display{margin-top:8px;text-align:center;padding:10px;border:2px solid rgba(176,77,77,0.1);border-radius:6px;font-weight:800;color:var(--accent-red);background:#fff7f7;}
-  .user-sliders .row{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
-  .user-sliders .label{width:120px;font-weight:700;color:#666;font-size:13px;}
-  .mini-meter{flex:1;height:6px;background:#eee;border-radius:6px;overflow:hidden;}
-  .mini-meter i{display:block;height:100%;background:#222;width:100%;}
-  .footer{font-size:12px;color:#777;text-align:center;margin-top:10px;}
-  .btn-aktivasi{
-    margin-top:10px;
-    width:100%;
-    background:#b04d4d;
-    color:#fff;
-    font-weight:700;
-    border:none;
-    border-radius:6px;
-    padding:10px;
-    cursor:pointer;
-  }
+
+  .activation-box{margin-top:10px;display:flex;gap:8px;}
+  .activation-box input{flex:1;padding:8px;border:1px solid #ddd;border-radius:6px;font-weight:700;}
+  .activation-box button{padding:8px 12px;background:#b04d4d;color:#fff;border:none;border-radius:6px;font-weight:700;cursor:pointer;}
+
+  .footer{font-size:12px;color:#777;text-align:center;margin-top:8px;}
 </style>
 </head>
 <body>
@@ -163,6 +151,7 @@ WorkThreads : 5
 CheckRoom : 1
 ProtocolVersion : Global
 LoopVersion : 34.5.7.46.443
+
 National : THAILAND_Series
 Function Zone : Server Configuration
 Mode[1] : Connect => Success
@@ -170,6 +159,7 @@ Mode[1] : Password access detected (Success)
 Scan [1.1] : Pragmatic_Play_Access_Success
 Scan [1.2] : PG_SOFT_Access_Success
 Scan [1.3] : Joker_Gaming_Access_Success
+
 Status : Administrator
     </div>
   </div>
@@ -181,11 +171,10 @@ Status : Administrator
         <div class="provider-btn active">PRAGMATIC</div>
         <div class="provider-btn">PG SOFT</div>
         <div class="provider-btn">HABANERO</div>
-        <div class="provider-btn">JOKER GAMING</div>
+        <div class="provider-btn">JOKER</div>
         <div class="provider-btn">SPADE</div>
         <div class="provider-btn">YGGDRASIL</div>
-        <div class="provider-btn">NENTENT
-  </div>
+        <div class="provider-btn">MICROGAMING</div>
         <div class="provider-btn">XIN</div>
       </div>
     </div>
@@ -196,23 +185,25 @@ Status : Administrator
         <div class="slider-row"><div class="text">SERVER WINRATE</div><input type="range" id="srvWin" min="0" max="100" value="50"><div class="percent" id="srvWinVal">50%</div></div>
         <div class="slider-row"><div class="text">SERVER JACKPOT</div><input type="range" id="srvJack" min="0" max="100" value="30"><div class="percent" id="srvJackVal">30%</div></div>
         <div class="slider-row"><div class="text">SERVER RTP</div><input type="range" id="srvRtp" min="0" max="100" value="75"><div class="percent" id="srvRtpVal">75%</div></div>
+
+        <div class="activation-box">
+          <input type="text" id="userId" placeholder="Masukkan USER ID">
+          <button id="activateBtn">Aktivasi Server</button>
+        </div>
       </div>
 
       <div class="right-col">
         <div class="card">
-          <div style="font-weight:700;color:#b04d4d;">USER ID</div>
-          <input type="text" id="userId" class="deposit-input" placeholder="Masukkan User ID">
-          <div style="font-weight:700;color:#b04d4d;margin-top:10px;">USER DEPOSIT</div>
-          <div class="deposit-row"><input type="text" id="depositInput" class="deposit-input" placeholder="0"><div class="nominal-box" id="depositDisplay">Rp. 0</div></div>
+          <div style="font-weight:700;color:#b04d4d;">USER DEPOSIT</div>
+          <div class="deposit-row"><input type="text" id="depositInput" class="deposit-input" placeholder="Nominal Deposit"><div class="nominal-box" id="depositBox">Rp. 0</div></div>
           <div style="margin-top:8px;font-weight:700;color:#777;font-size:13px;">JACKPOT RANGE</div>
           <div class="jackpot-inputs"><input type="text" id="jackMin" value="3.000.000"><input type="text" id="jackMax" value="6.000.000"></div>
           <div class="jackpot-display" id="jackDisplay">JACKPOT [ACTIVE] Rp. 3.000.000 - Rp. 6.000.000</div>
-          <button class="btn-aktivasi" id="btnAktivasi">AKTIVASI SERVER</button>
         </div>
       </div>
     </div>
 
-    <div class="footer">Direct by PLUT🪐77. enabled on mobile</div>
+    <div class="footer">UI-only simulator — 16:9 responsive layout</div>
   </div>
 </div>
 
@@ -223,32 +214,13 @@ function formatThousands(n){
   s=s.replace(/^0+/,'')||'0';
   return s.replace(/\B(?=(\d{3})+(?!\d))/g,'.');
 }
-function appendLog(msg){
-  const log=document.getElementById('accessLog');
-  const time=new Date().toLocaleTimeString();
-  log.textContent+=`\\n[${time}] ${msg}`;
-  log.scrollTop=log.scrollHeight;
-}
-document.getElementById('btnAktivasi').addEventListener('click',()=>{
-  const id=document.getElementById('userId').value||'Unknown';
-  const min=document.getElementById('jackMin').value;
-  const max=document.getElementById('jackMax').value;
-  const dep=document.getElementById('depositInput').value;
-  const srv=document.getElementById('serverName').textContent;
-  appendLog(`Simulasi Aktivasi: ${srv} — koneksi uji berhasil.`);
-  appendLog(`UserID: ${id} — Input Jackpot: Rp. ${min} - Rp. ${max}`);
-  appendLog(`Deposit uji: Rp. ${dep}`);
-  appendLog(`Status: Simulasi berhasil`);
-  appendLog(`Log System: AUTO CONFIG COMPLETE`);
-});
 document.querySelectorAll('#jackMin,#jackMax,#depositInput').forEach(i=>{
   i.addEventListener('input',e=>{
     e.target.value=formatThousands(e.target.value);
     const min=document.getElementById('jackMin').value||'-';
     const max=document.getElementById('jackMax').value||'-';
     document.getElementById('jackDisplay').textContent=`JACKPOT [ACTIVE] Rp. ${min} - Rp. ${max}`;
-    const dep=document.getElementById('depositInput').value||'0';
-    document.getElementById('depositDisplay').textContent=`Rp. ${dep}`;
+    document.getElementById('depositBox').textContent=`Rp. ${document.getElementById('depositInput').value||'0'}`;
   });
 });
 document.querySelectorAll('.provider-btn').forEach(btn=>{
@@ -261,6 +233,14 @@ document.querySelectorAll('.provider-btn').forEach(btn=>{
 ['srvWin','srvJack','srvRtp'].forEach(id=>{
   const el=document.getElementById(id),val=document.getElementById(id+'Val');
   el.addEventListener('input',()=>val.textContent=el.value+'%');
+});
+document.getElementById('activateBtn').addEventListener('click',()=>{
+  const uid=document.getElementById('userId').value.trim()||'UNKNOWN';
+  const dep=document.getElementById('depositInput').value||'0';
+  const srv=document.getElementById('serverName').textContent.trim();
+  const log=document.getElementById('accessLog');
+  log.textContent += `\n\n> Aktivasi Server [${srv}] untuk USER [${uid}] ...\n> Deposit terdeteksi Rp. ${dep}\n> Connection established\n> Mode : AUTO SYNC\n> Status : SUCCESS ✅\n> LogTime : ${new Date().toLocaleString()}`;
+  log.scrollTop = log.scrollHeight;
 });
 </script>
 </body>
