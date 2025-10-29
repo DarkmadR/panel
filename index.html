@@ -1,46 +1,39 @@
-<!doctype html>
+<!doctype html>UI
 <html lang="id">
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-<title>Server Panel — Desktop / Landscape</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, minimum-scale=0.5, maximum-scale=3.0" />
+<title>Server Panel — Simulasi Desktop</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 <style>
-  /* --- Reset / Base --- */
   :root{
-    --bg-outer: #efefef;
-    --panel-bg: #ffffff;
-    --panel-border: #d7d7d7;
-    --muted: #6f6f6f;
-    --accent-red: #b04d4d;
-    --black: #111;
+    --bg-outer:#efefef;
+    --panel-bg:#ffffff;
+    --panel-border:#d7d7d7;
+    --muted:#6f6f6f;
+    --accent-red:#b04d4d;
+    --black:#111;
   }
   html,body{
-    height:100%;
     margin:0;
-    background: linear-gradient(#f7f7f7,#efefef);
-    font-family: "Poppins", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    background:linear-gradient(#f7f7f7,#efefef);
+    font-family:"Poppins",system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;
     -webkit-font-smoothing:antialiased;
-    -moz-osx-font-smoothing:grayscale;
-    overflow:hidden; /* NO SCROLL — fixed single screen */
+    overflow:auto;
   }
-
-  /* --- Stage: full viewport, two columns like photo --- */
   .stage {
-    height:100vh;
-    width:100vw;
+    width:1400px;
+    min-height:100vh;
     display:grid;
-    grid-template-columns: 35% 65%;
-    gap:0;
-    align-items:stretch;
-    justify-items:stretch;
+    grid-template-columns:35% 65%;
+    margin:auto;
+    background:var(--panel-bg);
+    border:1px solid var(--panel-border);
+    box-shadow:0 8px 30px rgba(0,0,0,0.05);
   }
-
-  /* --- LEFT: Access Log (static) --- */
   .left {
     padding:28px 24px;
-    background: var(--panel-bg);
-    border-right: 1px solid var(--panel-border);
+    border-right:1px solid var(--panel-border);
     box-sizing:border-box;
     display:flex;
     flex-direction:column;
@@ -51,519 +44,224 @@
     color:var(--black);
     font-size:14px;
   }
-  .access-box{
-    background:#fff;
+  .access-box {
     border:1px solid var(--panel-border);
     border-radius:6px;
     padding:12px;
-    box-shadow: 0 6px 18px rgba(10,10,10,0.04);
+    background:#fff;
     font-size:13px;
-    color:#222;
-    line-height:1.32;
-    height:calc(100vh - 100px); /* fill left area but still no scroll on body */
-    overflow:auto; /* allow internal scrolling only if content overflows the box itself */
-  }
-  .access-box pre{
-    margin:0;
+    font-family: "Courier New", monospace;
+    line-height:1.4;
+    color:#111;
+    overflow:auto;
+    height:calc(100vh - 100px);
     white-space:pre-wrap;
-    font-family:inherit;
-    font-size:13px;
-    color:#222;
   }
-
-  /* --- RIGHT: Main Panel --- */
   .right {
     padding:18px 20px;
-    background:var(--panel-bg);
-    box-sizing:border-box;
     display:flex;
     flex-direction:column;
     gap:12px;
   }
-
-  /* header */
   .header-row{
     display:flex;
     align-items:center;
     justify-content:space-between;
-    gap:12px;
   }
   .server-title{
     font-weight:800;
     font-size:20px;
-    letter-spacing:0.3px;
-    color: #222;
   }
-  .server-title .accent{ color: var(--accent-red); margin-left:6px; font-weight:900; }
-
-  /* top-right providers grid */
-  .providers {
+  .accent{color:var(--accent-red);}
+  .providers{
     display:grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns:repeat(2,1fr);
     gap:8px;
-    width:420px; /* like photo */
+    width:420px;
   }
   .provider-btn{
-    background: linear-gradient(#fbfbfb,#fff);
+    background:linear-gradient(#fbfbfb,#fff);
     border:1px solid #d4d4d4;
-    padding:10px 12px;
     border-radius:6px;
+    padding:10px;
     font-weight:700;
-    font-size:13px;
     text-align:center;
     cursor:pointer;
-    box-shadow: 0 6px 18px rgba(10,10,10,0.03);
-    color:#222;
   }
   .provider-btn.active{
-    background: linear-gradient(#fff7f6,#fff);
-    border:1px solid rgba(176,77,77,0.18);
-    box-shadow: 0 10px 26px rgba(176,77,77,0.06);
+    background:linear-gradient(#fff7f6,#fff);
+    border-color:rgba(176,77,77,0.3);
   }
-
-  /* center split area (sliders left + right controls) */
   .center-split{
     display:grid;
-    grid-template-columns: 1fr 420px; /* left sliders area and right narrow column */
+    grid-template-columns:1fr 420px;
     gap:14px;
     align-items:start;
-    flex:1;
   }
-
-  /* left sliders area */
   .sliders-panel{
-    background:linear-gradient(#fff,#fafafa);
     border:1px solid #e7e7e7;
     border-radius:6px;
     padding:12px;
-    box-shadow: 0 6px 16px rgba(10,10,10,0.03);
+    background:linear-gradient(#fff,#fafafa);
   }
-  .sliders-panel .label{
-    font-weight:700;
-    color:#666;
-    font-size:13px;
-    margin-bottom:10px;
-  }
-  .slider-row{
-    display:flex;
-    align-items:center;
-    gap:12px;
-    margin:10px 0;
-  }
-  .slider-row .text{
-    width:170px;
-    font-weight:700;
-    color:#666;
-    font-size:13px;
-  }
+  .label{font-weight:700;color:#666;font-size:13px;margin-bottom:8px;}
+  .slider-row{display:flex;align-items:center;gap:12px;margin:10px 0;}
+  .slider-row .text{width:170px;font-weight:700;color:#666;font-size:13px;}
   input[type="range"]{
     -webkit-appearance:none;
     appearance:none;
+    flex:1;
     height:6px;
     background:#e6e6e6;
     border-radius:6px;
     outline:none;
-    flex:1;
   }
   input[type="range"]::-webkit-slider-thumb{
     -webkit-appearance:none;
-    appearance:none;
-    width:16px; height:16px;
+    width:16px;
+    height:16px;
     border-radius:50%;
     background:#222;
     cursor:pointer;
-    box-shadow:0 2px 6px rgba(0,0,0,0.2);
   }
-  .percent{
-    width:48px;
-    text-align:right;
-    font-weight:800;
-    color:#222;
-    font-size:13px;
-  }
-
-  /* special WSO & input boxes */
-  .wso-box{
+  .percent{width:48px;text-align:right;font-weight:800;font-size:13px;}
+  .wso-box{margin-top:10px;border-top:1px solid #eee;padding-top:12px;display:flex;flex-direction:column;gap:8px;}
+  .right-col{display:flex;flex-direction:column;gap:12px;}
+  .card{border:1px solid #e6e6e6;border-radius:6px;padding:12px;background:#fff;}
+  .deposit-row{display:flex;align-items:center;gap:8px;}
+  .deposit-input{flex:1;padding:8px;border:1px solid #ddd;border-radius:6px;font-weight:700;}
+  .nominal-box{width:120px;text-align:center;border:1px solid #ddd;padding:8px;border-radius:6px;font-weight:800;}
+  .jackpot-inputs{display:flex;gap:8px;margin-top:8px;}
+  .jackpot-inputs input{flex:1;padding:8px;border:1px solid #ddd;border-radius:6px;text-align:right;font-weight:700;}
+  .jackpot-display{margin-top:8px;text-align:center;padding:10px;border:2px solid rgba(176,77,77,0.1);border-radius:6px;font-weight:800;color:var(--accent-red);background:#fff7f7;}
+  .user-sliders .row{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
+  .user-sliders .label{width:120px;font-weight:700;color:#666;font-size:13px;}
+  .mini-meter{flex:1;height:6px;background:#eee;border-radius:6px;overflow:hidden;}
+  .mini-meter i{display:block;height:100%;background:#222;width:100%;}
+  .footer{font-size:12px;color:#777;text-align:center;margin-top:10px;}
+  .btn-aktivasi{
     margin-top:10px;
-    border-top:1px solid #eee;
-    padding-top:12px;
-    display:flex;
-    flex-direction:column;
-    gap:8px;
-  }
-  .wso-title{ font-weight:800; color: #b04d4d; font-size:13px; }
-  .wso-row{ display:flex; gap:8px; align-items:center; }
-  .wso-row input[type="text"]{
-    flex:1;
-    padding:8px;
-    border-radius:6px;
-    border:1px solid #ddd;
+    width:100%;
+    background:#b04d4d;
+    color:#fff;
     font-weight:700;
-  }
-
-  /* right narrow column: deposit, user sliders, jackpot area */
-  .right-col {
-    display:flex;
-    flex-direction:column;
-    gap:12px;
-  }
-  .card{
-    background:linear-gradient(#fff,#fcfcfc);
-    border:1px solid #e6e6e6;
-    padding:12px;
+    border:none;
     border-radius:6px;
-  }
-  .deposit-row{
-    display:flex;
-    align-items:center;
-    gap:8px;
-  }
-  .small-black{
-    width:26px; height:18px; background:#000; border-radius:2px;
-  }
-  .deposit-input {
-    flex:1;
-    padding:8px;
-    border-radius:5px;
-    border:1px solid #ddd;
-    font-weight:700;
-  }
-  .nominal-box{
-    width:120px;
-    padding:8px;
-    border-radius:5px;
-    border:1px solid #ddd;
-    text-align:center;
-    font-weight:800;
-  }
-
-  /* user small sliders on right */
-  .user-sliders .row{ display:flex; align-items:center; gap:8px; margin-bottom:10px; }
-  .user-sliders .label{ width:120px; font-weight:700; color:#666; font-size:13px; }
-  .mini-meter{ flex:1; height:6px; background:#eee; border-radius:6px; overflow:hidden; position:relative; }
-  .mini-meter > i{ display:block; height:100%; width:50%; background:#222; }
-
-  /* jackpot active area with two inputs */
-  .jackpot-area{
-    margin-top:6px;
-    border-top:1px solid #eee;
-    padding-top:12px;
-  }
-  .jackpot-inputs{
-    display:flex;
-    gap:10px;
-    align-items:center;
-  }
-  .jackpot-inputs input{
-    flex:1;
     padding:10px;
-    border-radius:6px;
-    border:1px solid #ddd;
-    font-weight:800;
-    text-align:right;
+    cursor:pointer;
   }
-  .jackpot-display{
-    margin-top:12px;
-    border:2px solid rgba(176,77,77,0.12);
-    border-radius:6px;
-    padding:12px;
-    text-align:center;
-    font-weight:900;
-    color:var(--accent-red);
-    background: linear-gradient(#fff,#fff7f7);
-    letter-spacing:0.4px;
-  }
-
-  /* rightmost vertical small strip mimic (if needed) - optional */
-  .right-strip{
-    position:absolute;
-    right:12px;
-    top:18px;
-    width:120px;
-    height:620px;
-    border-radius:8px;
-    background:linear-gradient(#fff,#fafafa);
-    border:1px solid #e7e7e7;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    writing-mode:vertical-rl;
-    transform:rotate(180deg);
-    font-weight:800;
-    color:#444;
-    font-size:16px;
-    box-shadow: 0 8px 26px rgba(0,0,0,0.04);
-  }
-
-  /* footer small notes */
-  .footer{
-    font-size:12px;
-    color:var(--muted);
-    margin-top:6px;
-  }
-
-  /* --- Desktop-like small adjustments for mobile landscape: scale down text when viewport narrow --- */
-  @media (max-width:1100px) and (orientation: landscape) {
-    .server-title{ font-size:18px; }
-    .providers{ width:320px; }
-    .center-split{ grid-template-columns: 1fr 320px; }
-    .right-strip{ display:none; }
-  }
-
-  /* Prevent body scroll in small heights (still no scroll) */
-  @media (max-height:600px) {
-    .access-box{ height: calc(100vh - 140px); }
-  }
-
 </style>
 </head>
 <body>
-  <div class="stage">
 
-    <!-- LEFT: Access Log -->
-    <div class="left">
-      <div class="title">Access Log Server : ADMINISTRATOR @ PRAGMATIC</div>
-      <div class="access-box" aria-hidden="false">
-<pre>
+<div class="stage">
+  <div class="left">
+    <div class="title">Access Log Server : ADMINISTRATOR @ PRAGMATIC</div>
+    <div class="access-box" id="accessLog">
 Login : 1
 WorkThreads : 5
 CheckRoom : 1
 ProtocolVersion : Global
 LoopVersion : 34.5.7.46.443
-
 National : THAILAND_Series
 Function Zone : Server Configuration
 Mode[1] : Connect => Success
 Mode[1] : Password access detected (Success)
-Mode[1] : init_game_master => started
-Mode[1] : DataProcess.api => Success
-Mode[1] : Init Allocator core => Success
 Scan [1.1] : Pragmatic_Play_Access_Success
-Scan [1.2] : Habanero_Access - Success
-Scan [1.3] : PG_SOFT_Access - Success
-Scan [1.4] : Joker_Gaming_Access - Success
-
+Scan [1.2] : PG_SOFT_Access_Success
+Scan [1.3] : Joker_Gaming_Access_Success
 Status : Administrator
-</pre>
+    </div>
+  </div>
+
+  <div class="right">
+    <div class="header-row">
+      <div class="server-title">SERVER : <span class="accent" id="serverName">PRAGMATIC</span></div>
+      <div class="providers">
+        <div class="provider-btn active">PRAGMATIC</div>
+        <div class="provider-btn">PG SOFT</div>
+        <div class="provider-btn">HABANERO</div>
+        <div class="provider-btn">JOKER GAMING</div>
+        <div class="provider-btn">SPADE</div>
+        <div class="provider-btn">YGGDRASIL</div>
+        <div class="provider-btn">NENTENT
+  </div>
+        <div class="provider-btn">XIN</div>
       </div>
     </div>
 
-    <!-- RIGHT: Main Panel -->
-    <div class="right">
-      <div class="header-row">
-        <div class="server-title">SERVER : <span class="accent">PRAGMATICSLOT</span></div>
-
-        <div class="providers" role="toolbar" aria-label="Providers">
-          <div class="provider-btn active">PRAGMATIC</div>
-          <div class="provider-btn">MICRO GAMING</div>
-          <div class="provider-btn">PG SOFT</div>
-          <div class="provider-btn">HABANERO</div>
-          <div class="provider-btn">JOKER GAMING</div>
-          <div class="provider-btn">XIN GAMING</div>
-          <div class="provider-btn">SPADE GAMING</div>
-          <div class="provider-btn">YGGDRASIL</div>
-        </div>
+    <div class="center-split">
+      <div class="sliders-panel">
+        <div class="label">SERVER WINRATE / JACKPOT / RTP</div>
+        <div class="slider-row"><div class="text">SERVER WINRATE</div><input type="range" id="srvWin" min="0" max="100" value="50"><div class="percent" id="srvWinVal">50%</div></div>
+        <div class="slider-row"><div class="text">SERVER JACKPOT</div><input type="range" id="srvJack" min="0" max="100" value="30"><div class="percent" id="srvJackVal">30%</div></div>
+        <div class="slider-row"><div class="text">SERVER RTP</div><input type="range" id="srvRtp" min="0" max="100" value="75"><div class="percent" id="srvRtpVal">75%</div></div>
       </div>
 
-      <div class="center-split">
-        <!-- left: sliders & WSO -->
-        <div class="sliders-panel">
-          <div class="label">SERVER WINRATE / JACKPOT / RTP</div>
-
-          <div class="slider-row">
-            <div class="text">SERVER WINRATE</div>
-            <input type="range" id="srvWin" min="0" max="100" value="50">
-            <div class="percent" id="srvWinVal">50%</div>
-          </div>
-
-          <div class="slider-row">
-            <div class="text">SERVER JACKPOT</div>
-            <input type="range" id="srvJack" min="0" max="100" value="30">
-            <div class="percent" id="srvJackVal">30%</div>
-          </div>
-
-          <div class="slider-row">
-            <div class="text">SERVER RTP</div>
-            <input type="range" id="srvRtp" min="0" max="100" value="75">
-            <div class="percent" id="srvRtpVal">75%</div>
-          </div>
-
-          <div class="wso-box">
-            <div class="wso-title">SPECIAL WSO ACCOUNT</div>
-            <div class="wso-row">
-              <input type="text" id="wsoUser" placeholder="USER ID">
-            </div>
-            <div class="wso-row">
-              <input type="text" id="wsoJack" placeholder="INPUT WSO JACKPOT">
-            </div>
-          </div>
-        </div>
-
-        <!-- right: deposit / user sliders / jackpot -->
-        <div class="right-col">
-          <div class="card">
-            <div style="display:flex;align-items:center;justify-content:space-between;">
-              <div style="font-weight:700;color:#b04d4d;">USER DEPOSIT</div>
-              <div style="font-size:13px;color:var(--muted)">USER WINRATE 100%</div>
-            </div>
-
-            <div style="height:10px"></div>
-
-            <div class="deposit-row">
-              <div class="small-black" aria-hidden="true"></div>
-              <input class="deposit-input" id="depositInput" type="text" placeholder="________">
-              <div class="nominal-box">Rp. 100.000</div>
-            </div>
-
-            <div style="height:8px"></div>
-            <div style="font-size:13px;color:var(--muted);font-weight:700;margin-bottom:8px;">JACKPOT RANGE</div>
-
-            <div class="jackpot-area">
-              <div class="jackpot-inputs">
-                <input type="text" id="jackMin" value="3.000.000" aria-label="Minimum Jackpot">
-                <input type="text" id="jackMax" value="6.000.000" aria-label="Maximum Jackpot">
-              </div>
-
-              <div class="jackpot-display" id="jackDisplay">
-                JACKPOT [ACTIVE] Rp. 3.000.000 - Rp. 6.000.000
-              </div>
-            </div>
-          </div>
-
-          <!-- user sliders block -->
-          <div class="card user-sliders">
-            <div class="row">
-              <div class="label">USER WINRATE</div>
-              <div class="mini-meter"><i id="miniWin" style="width:100%"></i></div>
-              <div style="width:44px;text-align:right;font-weight:800">100%</div>
-            </div>
-
-            <div class="row">
-              <div class="label">USER RTP</div>
-              <div class="mini-meter"><i id="miniRtp" style="width:100%"></i></div>
-              <div style="width:44px;text-align:right;font-weight:800">100%</div>
-            </div>
-
-            <div class="row">
-              <div class="label">USER JACKPOT</div>
-              <div class="mini-meter"><i id="miniJack" style="width:100%"></i></div>
-              <div style="width:44px;text-align:right;font-weight:800">100%</div>
-            </div>
-          </div>
-
-          <!-- result log -->
-          <div class="card">
-            <div style="font-weight:700;color:var(--muted);margin-bottom:8px;">Result Log</div>
-            <div style="height:86px; overflow:auto; font-size:13px; color:#222; background:#fafafa; border-radius:6px; border:1px dashed #eee; padding:8px;" id="resultLog">
-              Belum ada aksi.
-            </div>
-          </div>
+      <div class="right-col">
+        <div class="card">
+          <div style="font-weight:700;color:#b04d4d;">USER ID</div>
+          <input type="text" id="userId" class="deposit-input" placeholder="Masukkan User ID">
+          <div style="font-weight:700;color:#b04d4d;margin-top:10px;">USER DEPOSIT</div>
+          <div class="deposit-row"><input type="text" id="depositInput" class="deposit-input" placeholder="0"><div class="nominal-box" id="depositDisplay">Rp. 0</div></div>
+          <div style="margin-top:8px;font-weight:700;color:#777;font-size:13px;">JACKPOT RANGE</div>
+          <div class="jackpot-inputs"><input type="text" id="jackMin" value="3.000.000"><input type="text" id="jackMax" value="6.000.000"></div>
+          <div class="jackpot-display" id="jackDisplay">JACKPOT [ACTIVE] Rp. 3.000.000 - Rp. 6.000.000</div>
+          <button class="btn-aktivasi" id="btnAktivasi">AKTIVASI SERVER</button>
         </div>
       </div>
-
-      <div class="footer">UI-only simulator — offline · desktop/landscape layout</div>
     </div>
 
+    <div class="footer">Direct by PLUT🪐77. enabled on mobile</div>
+  </div>
+</div>
 
 <script>
-  // --- Utility: format numbers with dot per thousands ---
-  function formatThousands(n) {
-    if (n === '' || n === null) return '';
-    // n may be number or numeric string
-    let s = String(n).replace(/\D/g,'');
-    if (s === '') return '';
-    // remove leading zeros
-    s = s.replace(/^0+/, '') || '0';
-    return s.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-  }
-
-  // --- Slider realtime updates ---
-  const srvWin = document.getElementById('srvWin'), srvWinVal = document.getElementById('srvWinVal');
-  const srvJack = document.getElementById('srvJack'), srvJackVal = document.getElementById('srvJackVal');
-  const srvRtp = document.getElementById('srvRtp'), srvRtpVal = document.getElementById('srvRtpVal');
-
-  srvWin.addEventListener('input', ()=> srvWinVal.textContent = srvWin.value + '%');
-  srvJack.addEventListener('input', ()=> srvJackVal.textContent = srvJack.value + '%');
-  srvRtp.addEventListener('input', ()=> srvRtpVal.textContent = srvRtp.value + '%');
-
-  // --- Providers clickable ---
-  document.querySelectorAll('.provider-btn').forEach(btn=>{
-    btn.addEventListener('click', ()=>{
-      document.querySelectorAll('.provider-btn').forEach(x=>x.classList.remove('active'));
-      btn.classList.add('active');
-      pushLog(`Pilih provider: ${btn.textContent.trim()}`);
-    });
+function formatThousands(n){
+  let s=String(n).replace(/\D/g,'');
+  if(!s)return'';
+  s=s.replace(/^0+/,'')||'0';
+  return s.replace(/\B(?=(\d{3})+(?!\d))/g,'.');
+}
+function appendLog(msg){
+  const log=document.getElementById('accessLog');
+  const time=new Date().toLocaleTimeString();
+  log.textContent+=`\\n[${time}] ${msg}`;
+  log.scrollTop=log.scrollHeight;
+}
+document.getElementById('btnAktivasi').addEventListener('click',()=>{
+  const id=document.getElementById('userId').value||'Unknown';
+  const min=document.getElementById('jackMin').value;
+  const max=document.getElementById('jackMax').value;
+  const dep=document.getElementById('depositInput').value;
+  const srv=document.getElementById('serverName').textContent;
+  appendLog(`Simulasi Aktivasi: ${srv} — koneksi uji berhasil.`);
+  appendLog(`UserID: ${id} — Input Jackpot: Rp. ${min} - Rp. ${max}`);
+  appendLog(`Deposit uji: Rp. ${dep}`);
+  appendLog(`Status: Simulasi berhasil`);
+  appendLog(`Log System: AUTO CONFIG COMPLETE`);
+});
+document.querySelectorAll('#jackMin,#jackMax,#depositInput').forEach(i=>{
+  i.addEventListener('input',e=>{
+    e.target.value=formatThousands(e.target.value);
+    const min=document.getElementById('jackMin').value||'-';
+    const max=document.getElementById('jackMax').value||'-';
+    document.getElementById('jackDisplay').textContent=`JACKPOT [ACTIVE] Rp. ${min} - Rp. ${max}`;
+    const dep=document.getElementById('depositInput').value||'0';
+    document.getElementById('depositDisplay').textContent=`Rp. ${dep}`;
   });
-
-  // --- Jackpot inputs (two columns) with realtime formatting and display update ---
-  const jackMin = document.getElementById('jackMin'), jackMax = document.getElementById('jackMax'), jackDisplay = document.getElementById('jackDisplay');
-
-  function updateJackDisplay(){
-    const min = jackMin.value || '';
-    const max = jackMax.value || '';
-    const minTxt = min ? 'Rp. ' + min : 'Rp. -';
-    const maxTxt = max ? 'Rp. ' + max : 'Rp. -';
-    jackDisplay.textContent = `JACKPOT [ACTIVE] ${minTxt} - ${maxTxt}`;
-  }
-
-  // format on input and keep caret reasonably at end
-  function bindFormattedInput(el){
-    el.addEventListener('input', (e)=>{
-      const raw = e.target.value.replace(/\D/g,'');
-      const formatted = formatThousands(raw);
-      e.target.value = formatted;
-      updateJackDisplay();
-    });
-    // on blur if empty set to blank
-    el.addEventListener('blur', (e)=>{
-      if (!e.target.value) { e.target.value = ''; updateJackDisplay(); }
-    });
-    // allow paste numeric content
-    el.addEventListener('paste', (ev)=>{
-      ev.preventDefault();
-      const text = (ev.clipboardData || window.clipboardData).getData('text');
-      const digits = text.replace(/\D/g,'');
-      ev.target.value = formatThousands(digits);
-      updateJackDisplay();
-    });
-  }
-  // initialize with current values (already formatted in HTML)
-  bindFormattedInput(jackMin);
-  bindFormattedInput(jackMax);
-  updateJackDisplay();
-
-  // deposit field auto-format while typing (same behavior)
-  const depositInput = document.getElementById('depositInput');
-  bindFormattedInput(depositInput); // will format with dots
-
-  // small helper: push text to result log
-  const resultLog = document.getElementById('resultLog');
-  function pushLog(txt){
-    const t = new Date().toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
-    resultLog.textContent = `[${t}] ${txt}\n` + resultLog.textContent;
-  }
-
-  // deposit input change pushes a log entry for demo
-  depositInput.addEventListener('input', ()=>{
-    const v = depositInput.value || '(kosong)';
-    pushLog(`Deposit diisi: ${v}`);
+});
+document.querySelectorAll('.provider-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.provider-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('serverName').textContent=btn.textContent.trim();
   });
-
-  // WSO jackpot input format as well
-  const wsoJack = document.getElementById('wsoJack');
-  if (wsoJack) bindFormattedInput(wsoJack);
-
-  // Prevent Enter from reloading / submitting (no forms)
-  window.addEventListener('keydown', function(e){
-    if (e.key === 'Enter') {
-      // if focus is on any input, prevent default
-      const el = document.activeElement;
-      if (el && (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA')) e.preventDefault();
-    }
-  });
-
-  // initial small logs
-  pushLog('UI simulator siap — desktop/landscape mode');
+});
+['srvWin','srvJack','srvRtp'].forEach(id=>{
+  const el=document.getElementById(id),val=document.getElementById(id+'Val');
+  el.addEventListener('input',()=>val.textContent=el.value+'%');
+});
 </script>
 </body>
 </html>
