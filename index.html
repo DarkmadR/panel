@@ -12,6 +12,7 @@
     --panel-border:#d7d7d7;
     --muted:#6f6f6f;
     --accent-red:#b04d4d;
+    --success:#2e8b57;
     --black:#111;
   }
 
@@ -62,6 +63,25 @@
     height: calc(100vh - 100px);
     white-space: pre-wrap;
     line-height: 1.5;
+  }
+
+  .log-line {
+    opacity: 0;
+    animation: fadeIn 0.5s forwards;
+  }
+
+  .log-success {
+    color: var(--success);
+    font-weight: 600;
+  }
+
+  .log-bold {
+    font-weight: 700;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(3px); }
+    to { opacity: 1; transform: translateY(0); }
   }
 
   /* Right Side */
@@ -273,19 +293,32 @@
   <div class="left">
     <div class="title">Access Log Server : ADMINISTRATOR</div>
     <div class="access-box" id="accessLog">
-Login : 1
-WorkThreads : 5
-CheckRoom : 1
+System Booting...
+Initializing Node Process : OK
+Loading Database : Connected
+Module : Pragmatic_Play.dll (Loaded)
+Module : PG_Soft.dll (Loaded)
+Module : Joker_Gaming.dll (Loaded)
+Establish Secure Channel : TLS 1.3 - Success
+Verifying DataCache : OK
+CheckRoom : Active
 ProtocolVersion : Global
 LoopVersion : 34.5.7.46.443
 National : THAILAND_Series
+Process : Monitor Service Initialized
+Process : Authentication Layer OK
+Process : Jackpot Control Handler — READY
+Process : Server Configuration Cache — COMPLETE
 Function Zone : Server Configuration
 Mode[1] : Connect => Success
 Mode[1] : Password access detected (Success)
 Scan [1.1] : Pragmatic_Play_Access_Success
 Scan [1.2] : PG_SOFT_Access_Success
 Scan [1.3] : Joker_Gaming_Access_Success
-Status : Administrator
+Scan [2.0] : SpadeGaming_Access_Success
+Scan [2.1] : Microgaming_Access_Success
+Scan [2.2] : Yggdrasil_Access_Success
+Status : Administrator — ONLINE
     </div>
   </div>
 
@@ -337,8 +370,7 @@ Status : Administrator
         <button class="btn-aktivasi" id="btnAktivasi">AKTIVASI SERVER</button>
       </div>
 
-      <div class="footer">Direct agen slot terpercaya PLUT🪐77
-</div>
+      <div class="footer">Direct agen slot terpercaya PLUT🪐77</div>
     </div>
   </div>
 </div>
@@ -351,24 +383,38 @@ function formatThousands(n) {
   return s.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 }
 
-function appendLog(msg) {
+function appendLog(msg, type = '') {
   const log = document.getElementById('accessLog');
   const time = new Date().toLocaleTimeString();
-  log.textContent += `\n[${time}] ${msg}`;
+  const line = document.createElement('div');
+  line.className = 'log-line ' + (type === 'success' ? 'log-success' : '');
+  line.innerHTML = `[${time}] ${msg}`;
+  log.appendChild(line);
   log.scrollTop = log.scrollHeight;
 }
 
-document.getElementById('btnAktivasi').addEventListener('click', () => {
+document.getElementById('btnAktivasi').addEventListener('click', async () => {
   const id = document.getElementById('userId').value || 'Unknown';
   const min = document.getElementById('jackMin').value;
   const max = document.getElementById('jackMax').value;
   const dep = document.getElementById('depositInput').value;
   const srv = document.getElementById('serverName').textContent;
-  appendLog(`Simulasi Aktivasi: ${srv} — koneksi uji berhasil.`);
-  appendLog(`UserID: ${id} — Input Jackpot: Rp. ${min} - Rp. ${max}`);
-  appendLog(`Deposit uji: Rp. ${dep}`);
-  appendLog(`Status: Simulasi berhasil`);
-  appendLog(`Log System: AUTO CONFIG COMPLETE`);
+
+  const steps = [
+    `Menghubungkan ke server <b>${srv}</b>...`,
+    `Verifikasi kredensial pengguna: <b>${id}</b>`,
+    `Memeriksa jumlah deposit: <b>Rp. ${dep}</b>`,
+    `Mengatur konfigurasi jackpot: <b>Rp. ${min} - Rp. ${max}</b>`,
+    `Aktivasi Aktivasi: ${srv} — koneksi uji berhasil.`,
+    `<b>Status: Aktivasi berhasil</b>`,
+    `<b>Log System: AUTO CONFIG COMPLETE</b>`
+  ];
+
+  for (let i = 0; i < steps.length; i++) {
+    await new Promise(r => setTimeout(r, 400 + Math.random() * 500));
+    const type = steps[i].includes('berhasil') || steps[i].includes('COMPLETE') ? 'success' : '';
+    appendLog(steps[i], type);
+  }
 });
 
 document.querySelectorAll('#jackMin,#jackMax,#depositInput').forEach(i => {
@@ -396,4 +442,4 @@ document.querySelectorAll('.provider-btn').forEach(btn => {
 });
 </script>
 </body>
-  </html>
+</html>
